@@ -5,6 +5,7 @@ scale_color_ff <- function(...) {
   # ggthemes::scale_color_gdocs()
   ggthemes::scale_color_tableau(palette = 'Classic 10 Light', ...)
 }
+
 scale_fill_ff <- function(...) {
   ggthemes::scale_fill_tableau(palette = 'Classic 10 Light')
 }
@@ -32,13 +33,3 @@ theme_ff <-
       ...
     )
   }
-
-
-export_gg <- function(...) {
-  teproj::export_ext_png(
-    ...,
-    dir = 'output', 
-    units = 'in'
-  )
-}
-

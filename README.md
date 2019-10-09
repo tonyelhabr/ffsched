@@ -33,12 +33,26 @@ an HTTP request to return the same data (even though the league is
 you figure out how to download the data via a request, then please send
 a pull request.)
 
+The teams data can also be retrieved from the scores JSON without making
+any modifications to the code originally written specifically to extract
+teams, so retrieving the JSON file corresponding to the teams URL above
+is not completely necessary.
+
 ## Highlights
 
-Below are some hastily-made visualizations of the 2018 regular season
-for the “Texas Fantasy Football” league on ESPN. (Yes, it’s a super
-creative name, I know.)
+Below are some hastily-made visualizations for the “Texas Fantasy
+Football” league on ESPN. (Yes, it’s a super creative name, I know.)
 
-![](output/viz_scores_cusum_pf.png)
+### 2019
 
-![](output/viz_scores_cusum_both_2.png)
+![](output/2019-05/viz_bump.png)
+
+![](output/2019-05/viz_tornado.png)
+
+![](output/2019-05/viz_scores_cusum_both_2.png)
+
+### 2018
+
+![](output/2018-20/viz_scores_cusum_pf.png)
+
+![](output/2018-20/viz_scores_cusum_both_2.png)

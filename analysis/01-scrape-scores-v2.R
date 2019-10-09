@@ -1,7 +1,8 @@
 
-# url_scores <- 'http://fantasy.espn.com/apis/v3/games/ffl/seasons/2018/segments/0/leagues/453218?view=mMatchup&view=mMatchupScore&scoringPeriodId=20'
-path_scores_json <- 'data-raw/scores-2018-20.json'
-scores_json_raw <- path_scores_json %>% jsonlite::read_json()
+# url_scores <- 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/899513?rosterForTeamId=7&view=mDraftDetail&view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mPositionalRatings&view=mRoster&view=mSettings&view=mTeam&view=modular&view=mNav'
+
+subdir <- '2019-05'
+scores_json_raw <- import_json(file = 'scores', subdir = subdir)
 scores_raw <- scores_json_raw %>% clean_json()
 
 scores_labs <-
@@ -15,7 +16,15 @@ scores_labs <-
 scores_labs
 
 sides <- c('away', 'home')
-cols_sides <- c('adjustment', 'gamesPlayed', 'pointByScoringPeriod', 'teamId', 'tiebreak', 'totalPoints')
+cols_sides <-
+  c(
+    'adjustment',
+    'gamesPlayed',
+    'pointByScoringPeriod',
+    'teamId',
+    'tiebreak',
+    'totalPoints'
+  )
 
 scores_firsts <- 
   scores_raw %>% 
@@ -59,7 +68,11 @@ scores_meta <-
   scores_raw %>%
   filter(name1 == 'schedule' & is.na(name3)) %>% 
   drop_na_cols() %>%
-  left_join(scores_rngs %>% mutate(idx = idx_last + 1L) %>% select(idx, idx_intragrp, matchup_period_id)) %>% 
+  left_join(
+    scores_rngs %>% 
+      mutate(idx = idx_last + 1L) %>% 
+      select(idx, idx_intragrp, matchup_period_id)
+  ) %>% 
   fill(idx_intragrp, matchup_period_id, .direction = 'down') %>% 
   select(idx_intragrp, matchup_period_id, meta = name2, value)
 scores_meta
@@ -73,11 +86,16 @@ scores_wide <-
   scores_side %>% 
   rename(idx = idx_intragrp) %>% 
   mutate_at(vars(col), snakecase::to_snake_case) %>% 
-  tidyr::pivot_wider(names_from = c('side', 'col'), values_from = 'value', names_sep = '_')
+  tidyr::pivot_wider(
+    names_from = c('side', 'col'), 
+    values_from = 'value', 
+    names_sep = '_'
+  )
 scores_wide
 
 scores <-
   scores_wide %>%
+  filter(!is.na(idx)) %>% 
   select(
     idx, 
     wk = matchup_period_id, 
@@ -86,6 +104,7 @@ scores <-
     pts_away = away_total_points,
     pts_home = home_total_points
   ) %>% 
+  unnest(cols = matches('id|pts')) %>% 
   mutate_at(vars(matches('id')), as.integer) %>% 
   # left_join(
   #   tms %>% select(tm_away_id = tm_id, tm_away_abbrev = tm_abbrev)
@@ -94,8 +113,9 @@ scores <-
   #   tms %>% select(tm_home_id = tm_id, tm_home_abbrev = tm_abbrev)
   # ) %>% 
   mutate(
-    season = 2018L,
-    is_playoffs = dplyr::if_else(wk > 12, TRUE, FALSE)
+    # season = 2018L,
+    season = 2019L,
+    is_playoffs = ifelse(wk > 12, TRUE, FALSE)
   ) %>% 
   select(
     idx,
@@ -114,4 +134,4 @@ scores <-
     )
   )
 scores
-teproj::export_ext_csv(scores, dir = 'output')
+teproj::export_ext_csv(scores, subdir = '2019-05')

@@ -1,8 +1,8 @@
 
-scores <- teproj::import_ext_csv(file = 'scores', dir = 'output')
+scores <- teproj::import_ext_csv(file = 'scores', dir = 'output/2018-20')
 scores
 tms <- 
-  teproj::import_ext_csv(file = 'tms', dir = 'output') %>% 
+  teproj::import_ext_csv(file = 'tms', dir = 'output/2018-20') %>% 
   mutate_at(vars(name), ~case_when(. == 'Anthony' ~ 'Tony', TRUE ~ .)) %>% 
   mutate_at(vars(name), ~forcats::fct_reorder(., tm_id))
 tms %>% pull(name) %>% levels()
