@@ -1,17 +1,9 @@
 
-## Introduction
-
 This repo stores some ad-hoc analysis and visualizations of personal
 fantasy football (FF) data. Right now, it’s only for a public league on
 ESPN.
 
-### Aside
-
-For whatever reason, when ESPN upgraded their API from v2 to v3 in February 2019,
-they seemed to have deleted FF data for years prior to 2018. Whoe knows if we
-will ever be able to recover league history from before 2018.
-
-## Getting Started (i.e. How to do this for your own ESPN FF league)
+## Getting Started
 
 To repeat the same analysis for your own ESPN FF league, you’ll need to
 manually download your league’s team and box score information (in JSON
