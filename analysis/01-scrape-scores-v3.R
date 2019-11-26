@@ -1,8 +1,8 @@
 
 # url_scores <- 'https://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/899513?rosterForTeamId=7&view=mDraftDetail&view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mPositionalRatings&view=mRoster&view=mSettings&view=mTeam&view=modular&view=mNav'
 
-subdir <- '2019-07'
-scores_json_raw <- import_json(file = 'scores', subdir = subdir)
+.subdir <- '2019-12'
+scores_json_raw <- import_json(file = 'scores', subdir = .subdir)
 scores_raw <- scores_json_raw %>% clean_json()
 
 scores_labs <-
@@ -134,4 +134,4 @@ scores <-
     )
   )
 scores
-teproj::export_ext_csv(scores, subdir = '2019-05')
+export_csv(scores, dir = 'data', subdir = .subdir)

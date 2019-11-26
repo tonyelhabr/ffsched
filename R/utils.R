@@ -9,34 +9,37 @@
     jsonlite::read_json(path, ...)
   }
 
-.dir_import <- 'data-raw'
-import_json <- function(..., dir = .dir_import, subdir = NULL) {
+.import_json <- function(..., dir, subdir = NULL) {
   if(!is.null(subdir)) {
     dir <- file.path(dir, subdir)
   }
   .import_ext_json(..., dir = dir)
 }
 
-import_csv <- function(..., dir = .dir_import, subdir = NULL) {
+import_json <- purrr::partial(.import_json, dir = 'data-raw', ... = )
+
+.dir_export <- 'output'
+.import_csv <- function(..., dir, subdir = NULL) {
   if(!is.null(subdir)) {
     dir <- file.path(dir, subdir)
   }
   teproj::import_ext_csv(..., dir = dir)
 }
 
+import_csv <- purrr::partial(.import_csv, dir = .dir_export, ... = )
 
-.dir_export <- 'output'
-export_csv <- function(..., dir = .dir_export, subdir = NULL) {
+.export_csv <- function(..., dir = .dir_export, subdir = NULL) {
   if(!is.null(subdir)) {
     dir <- file.path(dir, subdir)
   }
   teproj::export_ext_csv(..., dir = dir)
 }
 
+export_csv <- purrr::partial(.export_csv, dir = .dir_export, ... = )
 
 export_gg <- function(..., dir = .dir_export, subdir = NULL) {
   if(!is.null(subdir)) {
     dir <- file.path(dir, subdir)
   }
-  teproj::export_ext_png(...,dir = dir)
+  teproj::export_ext_png(..., dir = dir)
 }
