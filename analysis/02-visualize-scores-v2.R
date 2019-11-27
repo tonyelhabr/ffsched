@@ -53,7 +53,7 @@ col_fgrnd <- '#e0e0e0' # fgrnd
 colors_modern_rc <- c(col_grid, col_fgrnd_def, col_bkgrnd, col_fgrnd)
 # scales::show_col(colors_modern_rc, labels = FALSE)
 
-.x_breaks <- seq(2, 12, by = 2)
+
 viz_bump <-
   tms_scores %>% 
   inner_join(tms_names) %>% 
@@ -74,8 +74,8 @@ viz_bump <-
     labels = as.character(1:10)
   ) +
   scale_x_continuous(
-    breaks = .x_breaks,
-    labels = paste0('Week ', .x_breaks)
+    breaks = 1:5,
+    labels = paste0('Week ', 1:5)
   ) +
   scale_color_ff() +
   guides(
@@ -98,18 +98,8 @@ viz_bump <-
   )
 viz_bump
 
-library(gganimate)
-viz_bump_anim <-
-  viz_bump +
-  transition_states(wk, transition_length = 1) +
-  enter_fade()
-viz_bump_anim 
-gganimate::animate()
-
-
 export_gg(
   viz_bump,
-  subdir = .subdir,
   width = 10,
   height = 8
 )
@@ -213,7 +203,7 @@ viz_scores_cusum_both_1 <-
   ggforce::geom_mark_circle(
     data = tms_scores %>% filter(wk == max(wk)),
     aes(label = name),
-
+    
     con.colour = col_fgrnd
   ) +
   scale_color_ff() +
