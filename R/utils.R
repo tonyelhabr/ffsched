@@ -37,9 +37,10 @@ import_csv <- purrr::partial(.import_csv, dir = .dir_export, ... = )
 
 export_csv <- purrr::partial(.export_csv, dir = .dir_export, ... = )
 
-export_gg <- function(..., dir = .dir_export, subdir = NULL) {
+export_gg <- function(x, ..., name = deparse(substitute(x)), dir = .dir_export, subdir = NULL) {
   if(!is.null(subdir)) {
     dir <- file.path(dir, subdir)
   }
-  teproj::export_ext_png(..., dir = dir)
+  path <- file.path(dir, sprintf('%s.png', name))
+  ggsave(plot = x, filename = path, ...)
 }

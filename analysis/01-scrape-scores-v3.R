@@ -134,4 +134,4 @@ scores <-
     )
   )
 scores
-export_csv(scores, dir = 'data', subdir = .subdir)
+export_csv(scores, subdir = .subdir)
