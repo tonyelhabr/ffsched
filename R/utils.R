@@ -1,46 +1,16 @@
 
-# NOTE: This is a simplified/custom version of `teproj::import_ext()`
-.import_ext_json <-
-  function(file,
-           dir = getwd(),
-           ext = 'json',
-           path = file.path(dir, paste0(file, '.', ext)),
-           ...) {
-    jsonlite::read_json(path, ...)
-  }
-
-.import_json <- function(..., dir, subdir = NULL) {
-  if(!is.null(subdir)) {
-    dir <- file.path(dir, subdir)
-  }
-  .import_ext_json(..., dir = dir)
+.get_dir_out <- function() {
+  getOption('ff.dir_out')
 }
 
-import_json <- purrr::partial(.import_json, dir = 'data-raw', ... = )
-
-.dir_export <- 'output'
-.import_csv <- function(..., dir, subdir = NULL) {
-  if(!is.null(subdir)) {
-    dir <- file.path(dir, subdir)
-  }
-  teproj::import_ext_csv(..., dir = dir)
+.get_league_id <- function() {
+  getOption('ff.league_id')
 }
 
-import_csv <- purrr::partial(.import_csv, dir = .dir_export, ... = )
-
-.export_csv <- function(..., dir = .dir_export, subdir = NULL) {
-  if(!is.null(subdir)) {
-    dir <- file.path(dir, subdir)
-  }
-  teproj::export_ext_csv(..., dir = dir)
+.get_league_size <- function() {
+  getOption('ff.league_size')
 }
 
-export_csv <- purrr::partial(.export_csv, dir = .dir_export, ... = )
-
-export_gg <- function(x, ..., name = deparse(substitute(x)), dir = .dir_export, subdir = NULL) {
-  if(!is.null(subdir)) {
-    dir <- file.path(dir, subdir)
-  }
-  path <- file.path(dir, sprintf('%s.png', name))
-  ggsave(plot = x, filename = path, ...)
+.get_season <- function() {
+  getOption('ff.season')
 }

@@ -10,7 +10,7 @@ was helpful for 2020 scraping.
 
 ### 2020
 
-![](output/viz_scores_cusum_both_2.png)
+![](output/2020-07/viz_scores_cusum_both_2.png)
 
 ### 2019
 

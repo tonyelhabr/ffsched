@@ -1,20 +1,20 @@
 
 base::.First.sys()
 
-path_r_profile <- "~/.Rprofile"
+path_r_profile <- '~/.Rprofile'
 if(file.exists(path_r_profile)) {
   source(path_r_profile)
 }
-rm("path_r_profile")
-.library_silently <- function(...) {
-  suppressWarnings(suppressPackageStartupMessages(base::library(...)))
+rm('path_r_profile')
+
+# options(readr.num_columns = 0)
+if (interactive()) {
+  suppressMessages(require(devtools))
+  suppressMessages(require(usethis))
 }
 
-.library_silently(tidyverse)
-.library_silently(rlang)
-.library_silently(teplot)
-rm('.library_silently')
-# filter <- dplyr::filter
-# select <- dplyr::select
+suppressMessages(require(devtools))
+suppressMessages(require(usethis))
+# invisible(R.utils::sourceDirectory(file.path('R'), recursive = FALSE))
+load_all()
 
-invisible(R.utils::sourceDirectory(file.path("R"), recursive = FALSE))
