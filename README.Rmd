@@ -2,24 +2,184 @@
 output: github_document
 ---
 
-This repo stores some ad-hoc analysis and visualizations of personal fantasy football (FF) data. While 2018 and 2019 plots required more work to put together due to the league being private, the 2020 data collection scrapes directly from ESPN because the league is now public.
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[Luke's gist](https://gist.github.com/lbenz730/ea7d5bce0a36fe66c4241c8facd6c153) was helpful for 2020 scraping.
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
-### 2020
+# ffsched
 
-![](output/viz_scores_cusum_both_2.png)
+<!-- badges: start -->
 
-### 2019
+<!-- badges: end -->
 
-![](output/2019-12/viz_bump_anim.gif)
+`{ffsched}` can generate unique sports league schedules. If you happen to have an ESPN fantasy football league, then `{ffsched}` can pull your league's scores and help you figure out the likelihood of your standings by combining teams' actual scores with simulated schedules. (Often the team that scores the most points across all games in the season does not end up winning due to "unlucky" opponent matchups!)
 
-![](output/2019-12/viz_tornado.png)
+## Installation
 
-![](output/2019-12/viz_scores_cusum_both.png)
+You can install the released version of ffsched from [CRAN](https://CRAN.R-project.org) with:
 
-### 2018
+``` r
+install.packages("ffsched")
+```
 
-![](output/2018-20/viz_scores_cusum_pf.png)
+And the development version from [GitHub](https://github.com/) with:
 
-![](output/2018-20/viz_scores_cusum_both_2.png)
+``` r
+# install.packages("remotes")
+remotes::install_github("tonyelhabr/ffsched")
+```
+
+## Basic Usage
+
+```{r setup}
+library(dplyr)
+library(magrittr)
+library(ffsched)
+```
+
+```{r echo=F, include=F}
+library(arrow)
+library(readr)
+```
+
+```{r echo=F, include=F}
+options(
+  readr.num_columns = 0,
+  ffsched.verbose = FALSE
+)
+```
+
+```{r}
+league_id <- 899513
+weeks <- 12
+league_size <- 10
+season <- 2020
+sims <- 1000
+tries <- 0.1 * sims
+```
+
+Simulate `r sims` unique schedules for a `r league_size`-team league for the first `r weeks` weeks. Note that you don't need the `league_id` for this!
+
+```{r eval=F}
+set.seed(42) # For repoducibility
+sched_sims <-
+  generate_schedules(
+    league_size = league_size,
+    sims = sims,
+    tries = tries
+  )
+```
+
+```{r echo=F, include=F}
+sched_sims <- system.file('schedules-league_size=10-weeks=12-sims=1000.parquet', package = 'ffsched') %>% arrow::read_parquet()
+```
+
+```{r}
+sched_sims
+```
+
+Get fantasy football scores from ESPN.
+
+```{r eval=F}
+scores <-
+  scrape_espn_ff_scores(
+    league_id = league_id,
+    league_size = league_size,
+    season = season,
+    weeks = weeks
+  )
+```
+
+```{r echo=F, include=F}
+scores <- system.file('scores-league_id=899513-league_size=10-season=2020-weeks=12.csv', package = 'ffsched') %>% readr::read_csv()
+```
+
+```{r}
+scores
+```
+
+Join the simulated schedules and the actual scores together to come up with simulated standings.
+
+```{r}
+anonymize_teams <- function(data) {
+  data %>% 
+    mutate(
+      across(team, ~sprintf('Team %02d', team_id))
+    )
+}
+```
+
+```{r eval=F}
+scores_by_team <- scores %>% select(team_id, team, week, pf)
+
+scores_sims <-
+  sched_sims %>% 
+  left_join(
+    scores_by_team,
+    by = c('week', 'team_id')
+  ) %>% 
+  left_join(
+    scores_by_team %>% 
+      dplyr::rename(opponent_id = .data$team_id, opponent = .data$team, pa = .data$pf),
+    by = c('week', 'opponent_id')
+  ) %>% 
+  mutate(
+    w = if_else(pf > pa, 1L, 0L)
+  )
+
+standings_sims <-
+  scores_sims %>% 
+  group_by(idx_sim, team, team_id) %>% 
+  summarize(
+    across(c(pf, w), sum)
+  ) %>% 
+  ungroup() %>% 
+  group_by(idx_sim) %>% 
+  mutate(
+    rank_w = min_rank(-w)
+  ) %>% 
+  ungroup() %>% 
+  group_by(idx_sim, rank_w) %>% 
+  mutate(
+    rank_tiebreak = row_number(-pf) - 1L
+  ) %>% 
+  ungroup() %>% 
+  mutate(rank = rank_w + rank_tiebreak) %>% 
+  select(-rank_w, -rank_tiebreak) %>% 
+  anonymize_teams()
+```
+
+```{r echo=F, include=F}
+standings_sims <- system.file('standings_sims-league_id=899513-league_size=10-season=2020-weeks=12-sims=1000.parquet', package = 'ffsched') %>% arrow::read_parquet()
+standings_sims <- standings_sims %>% anonymize_teams()
+```
+
+```{r}
+standings_sims
+```
+
+`standings_sims` can be achieved by using the `do_simulate_standings` function, which wraps the functionality demonstrated above.
+
+```{r eval=F}
+standings_sims <-
+  do_simulate_standings(
+    league_id = league_id,
+    league_size = league_size,
+    season = season,
+    weeks = weeks,
+    sims = sims,
+    tries = tries
+  ) %>% 
+  anonymize_teams()
+```
+
+```{r}
+standings_sims
+```
