@@ -6,15 +6,15 @@
 \usage{
 generate_schedules(
   league_size = .get_league_size(),
-  weeks = 12,
+  weeks = .get_weeks_cutoff(),
   sims = 10,
-  tries = sims,
-  per_loop = min(sims, 10),
+  tries = ceiling(log(sims)),
+  check_dups = TRUE,
   ...,
-  overwrite = TRUE,
+  overwrite = FALSE,
   export = TRUE,
   dir = .get_dir_out(),
-  file = "sched_sim",
+  file = .generate_schedules_file(league_size, weeks, sims),
   ext = "parquet",
   path = file.path(dir, sprintf("\%s.\%s", file, ext)),
   f_import = arrow::read_parquet,
@@ -32,7 +32,9 @@ that \verb{league_size <= league_size < (2 * (league_size - 1))}.}
 
 \item{tries}{How many times to re-try.}
 
-\item{per_loop}{Purely for printing purposes.}
+\item{check_dups}{Whether to check for duplicates. It's recommended to leave this
+as \code{TRUE} to ensure that you get unique results, but that may not be what you
+desire.}
 
 \item{...}{Additional parameters passed to \code{generate_schedule()}}
 

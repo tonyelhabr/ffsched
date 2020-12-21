@@ -1,28 +1,31 @@
-Package: ff
-Title: What the Package Does (One Line, Title Case)
+Package: ffsched
+Title: Simulate Schedules and Standings for Fantasy Football
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Tony",
+           family = "ElHabr",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           email = "anthonyelhabr@gmail.com")
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
+Imports: 
+    cli,
+    dplyr,
+    glue,
+    jsonlite,
+    lubridate,
+    magrittr,
+    purrr,
+    rlang (>= 0.1.2),
+    scales,
+    stringr,
+    tibble,
+    tidyr
+Suggests: 
+    ggplot2,
+    extrafont
+    roxygen2
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Imports: 
-    magrittr,
-    dplyr,
-    stringr,
-    jsonlite,
-    tibble,
-    purrr,
-    glue,
-    ggplot2,
-    ggtext,
-    lubridate,
-    scales,
-    cli

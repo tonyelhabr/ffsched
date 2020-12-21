@@ -1,26 +1,38 @@
 
 #' Theme for ggplots
 #' 
+#' @param ... Extra arguments to pass to `ggplot2::theme_update`
 #' @export
-theme_update_ff <- function() {
+theme_set_update_ff <- function(...) {
+  if (!requireNamespace('ggplot2', quietly = TRUE)) {
+    stop('`{ggplot2}` needed for this function to work. Please install it.', call. = FALSE)
+  }
+  
+  if (requireNamespace('extrafont', quietly = TRUE)) {
+    extrafont::loadfonts('win', quiet = TRUE)
+    font <- 'Karla'
+  } else {
+    font <- ''
+  }
+  ggplot2::theme_set(ggplot2::theme_minimal())
   ggplot2::theme_update(
-    text = ggplot2::element_text(family = 'Karla', color = 'white'),
-    title = ggplot2::element_text('Karla', size = 22, color = 'white'),
-    plot.title = ggplot2::element_text(face = 'bold', size = 22),
-    plot.subtitle = ggplot2::element_text(face = 'bold', size = 14, color = 'white'),
-    # plot.margin = margin(10, 10, 10, 10),
-    # panel.grid = element_blank(),
+    ...,
+    text = ggplot2::element_text(family = font),
+    title = ggplot2::element_text(font, size = 14, color = 'gray20'),
+    plot.title = ggplot2::element_text(font, face = 'bold', size = 18, color = 'gray20'),
+    plot.title.position = 'plot',
+    axis.text = ggplot2::element_text(font, size = 14, color = 'gray20'),
     axis.title = ggplot2::element_text(size = 14, face = 'bold', hjust = 0.99),
-    axis.text = ggplot2::element_text(family = 'Karla', color = 'white'),
-    plot.caption = ggtext::element_markdown('Karla', size = 12, hjust = 0),
+    axis.line = ggplot2::element_blank(),
+    panel.grid.major = ggplot2::element_line(color = 'gray80'),
+    panel.grid.minor = ggplot2::element_line(color = 'gray80'),
+    panel.grid.minor.x = ggplot2::element_blank(),
+    panel.grid.minor.y = ggplot2::element_blank(),
+    plot.margin = ggplot2::margin(10, 10, 10, 10),
+    plot.caption = ggplot2::element_text(font, size = 10, color = 'gray20', hjust = 0),
     plot.caption.position = 'plot',
-    panel.spacing = ggplot2::element_blank(),
-    panel.grid.major = ggplot2::element_line(color = 'gray30'),
-    panel.grid.minor = ggplot2::element_line(color = 'gray30'),
-    plot.background = ggplot2::element_rect(fill = 'gray10', color = NA),
-    plot.tag = ggtext::element_markdown(size = 12, hjust = 1),
-    plot.tag.position = c(1, 0.01),
-    panel.background = ggplot2::element_blank()
+    plot.tag = ggplot2::element_text(font, size = 12, color = 'gray20', hjust = 0), 
+    legend.text = ggplot2::element_text(size = 14)
   )
-  ggplot2::update_geom_defaults('text', list(family = 'Karla', size = 5, color = 'white'))
+  ggplot2::update_geom_defaults('text', list(family = font, size = 4, color = 'white'))
 }

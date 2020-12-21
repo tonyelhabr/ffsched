@@ -159,6 +159,10 @@ generate_schedule <-
   is.null(mat) | any(is.na(mat))
 }
 
+.generate_schedules_file <- function(league_size, weeks, sims) {
+  sprintf('schedules-league_size=%s-weeks=%s-sims=%s', league_size, weeks, sims)
+}
+
 #' Generate schedules
 #' 
 #' Generate unique schedules for teams, presumably for a fantasy football league,
@@ -168,12 +172,14 @@ generate_schedule <-
 #' @details This function basically uses a brute force approach, hence the `tries`
 #' parameter.
 #' @param league_size Number of teams in the league. Can be set globally
-#' in the options. See `ff.league_size`.
+#' in the options. See `ffsched.league_size`.
 #' @param weeks How many weeks are in schedule. Presently, this function requires
 #' that `league_size <= league_size < (2 * (league_size - 1))`.
 #' @param sims How many unique simulations to generate.
 #' @param tries How many times to re-try.
-#' @param per_loop Purely for printing purposes.
+#' @param check_dups Whether to check for duplicates. It's recommended to leave this
+#' as `TRUE` to ensure that you get unique results, but that may not be what you
+#' desire.
 #' @param ... Additional parameters passed to `generate_schedule()`
 #' @param overwrite Whether to overwrite existing file at `path`, if it exists.
 #' @param export Whether to export.
@@ -185,24 +191,22 @@ generate_schedule <-
 #' @export
 generate_schedules <-
   function(league_size = .get_league_size(),
-           weeks = 12,
+           weeks = .get_weeks_cutoff(),
            sims = 10,
            tries = ceiling(log(sims)),
-           per_loop = min(sims, 100),
+           check_dups = TRUE,
            ...,
            overwrite = FALSE,
            export = TRUE,
            dir = .get_dir_out(),
-           file = sprintf('schedules-league_size=%s-weeks=%s-sims=%s', league_size, weeks, sims),
+           file = .generate_schedules_file(league_size, weeks, sims),
            ext = 'parquet',
            path = file.path(dir, sprintf('%s.%s', file, ext)),
            f_import = arrow::read_parquet,
            f_export = arrow::write_parquet) {
     
-    # league_size = 10; weeks = 12; sims = 10; tries = 10
-    assertthat::assert_that(weeks >= league_size)
-    assertthat::assert_that(weeks <= (2 * (league_size - 1)))
-    # sims = 10; tries = 3
+    stopifnot(weeks >= league_size)
+    stopifnot(weeks <= (2 * (league_size - 1)))
     
     path_exists <- path %>% file.exists()
     if(path_exists & !overwrite) {
@@ -211,27 +215,24 @@ generate_schedules <-
     }
     
     res_mats <- list()
-    folds <- split(1:sims, sort(rep_len(1:ceiling(sims / per_loop), length(1:sims))))
-    n_loop <- length(folds)
-    
     loop_i <- 1
     try_i <- 1
-    # while(try_i <= tries & loop_i <= n_loop) {
-      .display_info('`loop_i = {loop_i}` ({n_loop - loop_i} loops remaining)')
-      idx <- folds[[loop_i]]
-      n_todo <- length(idx)
-      while(try_i <= tries & n_todo > 0) {
-        .display_info('`try_i = {try_i}` ({tries - try_i} tries remaining)')
-
-        # mats <- map(1:n_todo, ~generate_schedule(league_size = league_size, ...))
-        mats <- 
-          purrr::map(
-            1:n_todo, 
-            ~generate_schedule(league_size = league_size, ...)
-          )
-        mats <- mats %>% purrr::discard(.mat_is_invalid)
-        n_valid <- mats %>% length()
-        i <- 2
+    n_todo <- sims
+    
+    while(try_i <= tries & n_todo > 0) {
+      .display_info('`try_i = {try_i}` ({tries - try_i} tries remaining)')
+      
+      mats <- 
+        purrr::map(
+          1:n_todo, 
+          ~generate_schedule(league_size = league_size, ...)
+        )
+      mats <- mats %>% purrr::discard(.mat_is_invalid)
+      
+      n_valid <- mats %>% length()
+      i <- 2
+      
+      if(check_dups) {
         i_dup <- c()
         while(i <= n_valid) {
           mat_i <- mats[[i]]
@@ -253,36 +254,32 @@ generate_schedules <-
         # Check for duplicates.
         if(length(i_dup) > 0) {
           for(i in i_dup) {
-            browser()
-            mats[[idx]] <- NULL
+            mats[[i]] <- NULL
           }
         }
-
-        n_good <- mats %>% length()
-        n_todo <- n_todo - n_good
-        i <- 1
-        # `j` starts after the last inserted matrix into `res_mats`.
-        j <- length(res_mats) + 1
-        while(i <= n_good) {
-          res_mats[[j]] <- mats[[i]]
-          i <- i + 1
-          j <- j + 1
-        }
-
-        if(n_todo > 0) {
-          .display_info('`n_todo = {n_todo}` in `loop_i = {loop_i}`.')
-          try_i <- try_i + 1
-        }
       }
-      loop_i <- loop_i + 1
-    }
+      
+      n_good <- mats %>% length()
+      n_todo <- n_todo - n_good
+      i <- 1
+      # `j` starts after the last inserted matrix into `res_mats`.
+      j <- length(res_mats) + 1
+      while(i <= n_good) {
+        res_mats[[j]] <- mats[[i]]
+        i <- i + 1
+        j <- j + 1
+      }
+      
+      if(n_todo > 0) {
+        .display_info('`n_todo = {n_todo}` in `loop_i = {loop_i}`.')
+        try_i <- try_i + 1
+      }
+      }
     
     if(try_i >= tries) {
       .display_info('Stopped early due to reaching number of tries ({tries})')
     }
-    if(loop_i == 2) {
-      browser()
-    }
+
     .display_info('Converting individual schedulings into one big, tidy data frame. This may take a while!')
     
     res_wide <- 
@@ -294,21 +291,21 @@ generate_schedules <-
           dplyr::mutate(team_id = dplyr::row_number())
       ) %>% 
       purrr::map_dfr(dplyr::bind_rows, .id = 'idx_sim') %>% 
-      dplyr::mutate(dplyr::across(idx_sim, as.integer))
+      dplyr::mutate(dplyr::across(.data$idx_sim, as.integer))
     res_wide
     
     res_tidy <-
       res_wide %>% 
       tidyr::pivot_longer(
-        -c(idx_sim, team_id),
+        -c(.data$idx_sim, .data$team_id),
         names_to = 'week',
         values_to = 'opponent_id'
       ) %>% 
       dplyr::mutate(
-        dplyr::across(opponent_id, as.integer),
-        dplyr::across(week, ~.x %>% stringr::str_remove('week_') %>% as.integer())
+        dplyr::across(.data$opponent_id, as.integer),
+        dplyr::across(.data$week, ~.x %>% stringr::str_remove('week_') %>% as.integer())
       ) %>% 
-      dplyr::select(idx_sim, week, team_id, opponent_id)
+      dplyr::select(.data$idx_sim, .data$week, .data$team_id, .data$opponent_id)
     
     weeks_extra <- weeks - league_size + 1
     if(weeks_extra <= 0) {
@@ -318,15 +315,15 @@ generate_schedules <-
     .display_info('Adding {weeks_extra} weeks by coping first {weeks_extra} weeks.')
     res_extra <-
       res_tidy %>% 
-      dplyr::filter(week <= weeks_extra) %>% 
-      dplyr::mutate(dplyr::across(week, ~.x + league_size - 1L))
+      dplyr::filter(.data$week <= !!weeks_extra) %>% 
+      dplyr::mutate(dplyr::across(.data$week, ~.x + !!league_size - 1L))
     
     res <-
       dplyr::bind_rows(
         res_tidy,
         res_extra
       ) %>% 
-      dplyr::arrange(idx_sim, week, team_id)
+      dplyr::arrange(.data$idx_sim, .data$week, .data$team_id)
     
     if(export) {
       .display_info('Exporting simulated schedules to `path = "{path}"`.')

@@ -1,7 +1,7 @@
 
 # library(tidyverse)
 .get_verbose <- function() {
-  getOption('ff.verbose')
+  getOption('ffsched.verbose')
 }
 
 .display_info <- function(x, ..., .envir = parent.frame(), .verbose = .get_verbose(), .f_glue = glue::glue_collapse) {
