@@ -9,3 +9,6 @@ data-raw/
 **.rds
 **.rdb
 **.rdx
+inst/doc
+doc
+Meta

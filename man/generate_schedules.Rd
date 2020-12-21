@@ -13,7 +13,7 @@ generate_schedules(
   ...,
   overwrite = FALSE,
   export = TRUE,
-  dir = .get_dir_out(),
+  dir = .get_dir_data(),
   file = .generate_schedules_file(league_size, weeks, sims),
   ext = "parquet",
   path = file.path(dir, sprintf("\%s.\%s", file, ext)),
@@ -23,7 +23,7 @@ generate_schedules(
 }
 \arguments{
 \item{league_size}{Number of teams in the league. Can be set globally
-in the options. See \code{ff.league_size}.}
+in the options. See \code{ffsched.league_size}.}
 
 \item{weeks}{How many weeks are in schedule. Presently, this function requires
 that \verb{league_size <= league_size < (2 * (league_size - 1))}.}

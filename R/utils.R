@@ -1,6 +1,6 @@
 
-.get_dir_out <- function() {
-  getOption('ffsched.dir_out')
+.get_dir_data <- function() {
+  getOption('ffsched.dir_data')
 }
 
 .get_league_id <- function() {

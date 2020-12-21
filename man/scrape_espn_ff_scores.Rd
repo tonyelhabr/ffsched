@@ -8,11 +8,12 @@ scrape_espn_ff_scores(
   league_id = .get_league_id(),
   league_size = .get_league_size(),
   season = .get_season(),
+  weeks = .get_weeks_cutoff(),
   ...,
   overwrite = FALSE,
   export = TRUE,
-  dir = .get_dir_out(),
-  file = .generate_espn_ff_scores_file(league_id, league_size, season),
+  dir = .get_dir_data(),
+  file = .generate_espn_ff_scores_file(league_id, league_size, season, weeks),
   ext = "csv",
   path = file.path(dir, sprintf("\%s.\%s", file, ext)),
   f_import = readr::read_csv,
@@ -21,13 +22,16 @@ scrape_espn_ff_scores(
 }
 \arguments{
 \item{league_id}{Number for ESPN league. Probably 6 digits. Can be set globally
-in the options. See \code{ff.league_id}.}
+in the options. See \code{ffsched.league_id}.}
 
 \item{league_size}{Number of teams in the league. Can be set globally
-in the options. See \code{ff.league_size}.}
+in the options. See \code{ffsched.league_size}.}
 
 \item{season}{Season for which to scrape. Can be set globally in the options.
-See \code{ff.season}.}
+See \code{ffsched.season}.}
+
+\item{weeks}{How many weeks are in schedule. Presently, this function requires
+that \verb{league_size <= league_size < (2 * (league_size - 1))}.}
 
 \item{...}{Additional parameters passed to \code{generate_schedule()}}
 

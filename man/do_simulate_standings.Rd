@@ -13,8 +13,8 @@ do_simulate_standings(
   tries = ceiling(log(sims)),
   overwrite = FALSE,
   export = TRUE,
-  dir = .get_dir_out(),
-  file = .generate_sims_file(league_id, league_size, season, sims),
+  dir = .get_dir_data(),
+  file = .generate_sims_file(league_id, league_size, season, weeks, sims),
   ext = "parquet",
   path = .generate_path(dir, file, ext),
   f_import = arrow::read_parquet,
@@ -25,13 +25,13 @@ do_simulate_standings(
 }
 \arguments{
 \item{league_id}{Number for ESPN league. Probably 6 digits. Can be set globally
-in the options. See \code{ff.league_id}.}
+in the options. See \code{ffsched.league_id}.}
 
 \item{league_size}{Number of teams in the league. Can be set globally
-in the options. See \code{ff.league_size}.}
+in the options. See \code{ffsched.league_size}.}
 
 \item{season}{Season for which to scrape. Can be set globally in the options.
-See \code{ff.season}.}
+See \code{ffsched.season}.}
 
 \item{weeks}{How many weeks are in schedule. Presently, this function requires
 that \verb{league_size <= league_size < (2 * (league_size - 1))}.}

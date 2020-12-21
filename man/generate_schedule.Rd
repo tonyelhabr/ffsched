@@ -14,7 +14,7 @@ generate_schedule(
 }
 \arguments{
 \item{league_size}{Number of teams in the league. Can be set globally
-in the options. See \code{ff.league_size}.}
+in the options. See \code{ffsched.league_size}.}
 
 \item{seed}{Seed to use}
 

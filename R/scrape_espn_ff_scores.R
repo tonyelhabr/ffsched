@@ -1,6 +1,6 @@
 
-.generate_espn_ff_scores_file <- function(league_id, league_size, season) {
-  sprintf('scores-league_id=%s-league_size=%s-season=%s', league_id, league_size, season)
+.generate_espn_ff_scores_file <- function(league_id, league_size, season, weeks) {
+  sprintf('scores-league_id=%s-league_size=%s-season=%s-weeks=%02d', league_id, league_size, season, weeks)
 }
 
 #' Scrape ESPN fantasy football scores
@@ -16,11 +16,12 @@ scrape_espn_ff_scores <-
   function(league_id = .get_league_id(),
            league_size = .get_league_size(),
            season = .get_season(),
+           weeks = .get_weeks_cutoff(),
            ...,
            overwrite = FALSE,
            export = TRUE,
-           dir = .get_dir_out(),
-           file = .generate_espn_ff_scores_file(league_id, league_size, season),
+           dir = .get_dir_data(),
+           file = .generate_espn_ff_scores_file(league_id, league_size, season, weeks),
            ext = 'csv',
            path = file.path(dir, sprintf('%s.%s', file, ext)),
            f_import = readr::read_csv,
@@ -71,15 +72,24 @@ scrape_espn_ff_scores <-
       dplyr::inner_join(
         teams %>% 
           dplyr::select(team_home_id = .data$team_id, team_home = .data$team),
-        by = 'team_homey_id'
+        by = 'team_home_id'
       ) %>% 
       dplyr::inner_join(
         teams %>% 
           dplyr::select(team_away_id = .data$team_id, team_away = .data$team),
         by = 'team_away_id'
-      ) %>% 
-      # These games haven't been played yet.
-      dplyr::filter(.data$points_home > 0) %>% 
+      )
+    
+    if(!is.null(weeks)) {
+      scores_init <-
+        scores_init %>% 
+        # These games haven't been played yet.
+        # dplyr::filter(.data$points_home > 0) %>% 
+        dplyr::filter(.data$week <= !!weeks)
+    }
+    
+    scores_init <-
+      scores_init %>% 
       dplyr::mutate(
         team_winner_id = dplyr::case_when(
           .data$points_away > .data$points_home ~ .data$team_away_id,
@@ -93,7 +103,7 @@ scrape_espn_ff_scores <-
         scores_init %>% dplyr::mutate(team_id = .data$team_away_id, team = .data$team_away),
         scores_init %>% dplyr::mutate(team_id = .data$team_home_id, team = .data$team_home)
       ) %>% 
-      dplyr::arrange(.data$team_id, .data$season, .data$week) %>% 
+      dplyr::arrange(.data$team_id, .data$week) %>% 
       dplyr::mutate(
         opponent_id = dplyr::if_else(.data$team_id == .data$team_home_id, .data$team_away_id, .data$team_home_id),
         pf = dplyr::if_else(.data$team_id == .data$team_away_id, .data$points_away, .data$points_home),

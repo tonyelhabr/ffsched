@@ -198,7 +198,7 @@ generate_schedules <-
            ...,
            overwrite = FALSE,
            export = TRUE,
-           dir = .get_dir_out(),
+           dir = .get_dir_data(),
            file = .generate_schedules_file(league_size, weeks, sims),
            ext = 'parquet',
            path = file.path(dir, sprintf('%s.%s', file, ext)),

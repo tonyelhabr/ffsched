@@ -1,8 +1,8 @@
 
-.generate_sims_file <- function(league_id, league_size, season, sims) {
+.generate_sims_file <- function(league_id, league_size, season, weeks, sims) {
   sprintf(
-    'standings_sims-leauge_id=%s-leauge_size=%s-season=%s-sims=%s',
-    league_id, league_size, season, sims
+    'standings_sims-league_id=%s-league_size=%s-season=%s-weeks=%s-sims=%s',
+    league_id, league_size, season, weeks, sims
   )
 }
 
@@ -29,8 +29,8 @@ do_simulate_standings <-
            tries = ceiling(log(sims)),
            overwrite = FALSE,
            export = TRUE,
-           dir = .get_dir_out(),
-           file = .generate_sims_file(league_id, league_size, season, sims),
+           dir = .get_dir_data(),
+           file = .generate_sims_file(league_id, league_size, season, weeks, sims),
            ext = 'parquet',
            path = .generate_path(dir, file, ext),
            f_import = arrow::read_parquet,

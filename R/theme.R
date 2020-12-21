@@ -3,7 +3,7 @@
 #' 
 #' @param ... Extra arguments to pass to `ggplot2::theme_update`
 #' @export
-theme_set_update_ff <- function(...) {
+theme_set_update_ffsched <- function(...) {
   if (!requireNamespace('ggplot2', quietly = TRUE)) {
     stop('`{ggplot2}` needed for this function to work. Please install it.', call. = FALSE)
   }

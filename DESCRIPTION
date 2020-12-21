@@ -6,9 +6,10 @@ Authors@R:
            family = "ElHabr",
            role = c("aut", "cre"),
            email = "anthonyelhabr@gmail.com")
-Description: What the package does (one paragraph).
+Description: Simultate schedules and standings for fantasy football.
 License: MIT + file LICENSE
-Imports: 
+Imports:
+    arrow,
     cli,
     dplyr,
     glue,
@@ -16,6 +17,7 @@ Imports:
     lubridate,
     magrittr,
     purrr,
+    readr,
     rlang (>= 0.1.2),
     scales,
     stringr,
@@ -23,9 +25,12 @@ Imports:
     tidyr
 Suggests: 
     ggplot2,
-    extrafont
-    roxygen2
+    extrafont,
+    roxygen2,
+    knitr,
+    rmarkdown
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+VignetteBuilder: knitr
