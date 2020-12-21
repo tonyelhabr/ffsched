@@ -25,6 +25,7 @@ Imports:
     tidyr
 Suggests: 
     ggplot2,
+    forcats,
     extrafont,
     roxygen2,
     knitr,
