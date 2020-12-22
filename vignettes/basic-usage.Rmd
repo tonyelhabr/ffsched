@@ -1,10 +1,10 @@
 ---
-title: "basic-usage"
-output: rmarkdown::html_vignette
+title: "Basic Usage"
+output: 
+  rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{basic-usage}
-  %\VignetteBuilder{rmarkdown}
-  %\VignetteEngine{rmarkdown::render}
+  %\VignetteIndexEntry{Basic Usage}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -267,9 +267,11 @@ viz_standings_tile
 ```{r echo=F, include=F, eval=F}
 ggsave(
   plot = viz_standings_tile, 
-  filename = file.path('man', 'figures', 'viz_standings_tile.png'), 
+  filename = file.path('viz_standings_tile.png'), 
   type = 'cairo', 
   width = 12,
   height = 8
 )
 ```
+
+![](viz_standings_tile.png)

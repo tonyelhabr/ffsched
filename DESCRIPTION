@@ -6,7 +6,8 @@ Authors@R:
            family = "ElHabr",
            role = c("aut", "cre"),
            email = "anthonyelhabr@gmail.com")
-Description: Simultate schedules and standings for fantasy football.
+Description: Simultate schedules and standings for fantasy
+    football.
 License: MIT + file LICENSE
 Imports:
     arrow,
@@ -24,14 +25,15 @@ Imports:
     tibble,
     tidyr
 Suggests: 
-    ggplot2,
-    forcats,
     extrafont,
-    roxygen2,
+    forcats,
+    ggplot2,
     knitr,
-    rmarkdown
+    rmarkdown,
+    roxygen2
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-VignetteBuilder: knitr
