@@ -3,12 +3,32 @@
   sprintf('scores-league_id=%s-league_size=%s-season=%s-weeks=%02d', league_id, league_size, season, weeks)
 }
 
+.coerce_local_path <- function(local, path, url, suffix = c('teams', 'scores')) {
+  # suffix <- match.arg(suffix)
+  if(local) {
+    path_exists <- path %>% file.exists()
+    if(!path_exists) {
+      .display_error('`path_{suffix} = "{path}"` must exist and be a JSON file downloaded from {url}')
+    }
+  } else {
+    path <- url
+  }
+  path
+}
+
 #' Scrape ESPN fantasy football scores
 #' 
 #' @param league_id Number for ESPN league. Probably 6 digits. Can be set globally
 #' in the options. See `ffsched.league_id`.
 #' @param season  Season for which to scrape. Can be set globally in the options. 
 #' See `ffsched.season`.
+#' @param local,path_teams,path_scores If your league is not public, you will have 
+#' to download the appropriate JSON files, set `local = TRUE`,
+#' and point `path_teams` and `path_scores` to these JSON files.
+#' The JSON for `path_teams` should downloaded from
+#' \url{http://fantasy.espn.com/apis/v3/games/ffl/seasons/{season}/segments/0/leagues/{league_id}?view=mtm}
+#' and the JSON for `path_scores` should be downloaded from
+#' \url{http://fantasy.espn.com/apis/v3/games/ffl/seasons/{season}/segments/0/leagues/{league_id}?view=mMatchup}.
 #' @inheritParams generate_schedules
 #' @export
 #' @seealso \url{https://gist.github.com/lbenz730/ea7d5bce0a36fe66c4241c8facd6c153}
@@ -17,6 +37,9 @@ scrape_espn_ff_scores <-
            league_size = .get_league_size(),
            season = .get_season(),
            weeks = .get_weeks_cutoff(),
+           local = FALSE,
+           path_teams = NULL,
+           path_scores = NULL,
            ...,
            overwrite = FALSE,
            export = TRUE,
@@ -35,8 +58,17 @@ scrape_espn_ff_scores <-
     
     base_url <-
       glue::glue('http://fantasy.espn.com/apis/v3/games/ffl/seasons/{season}/segments/0/leagues')
+    url_teams <- glue::glue('{base_url}/{league_id}?view=mtm')
+    url_scores <- glue::glue('{base_url}/{league_id}?view=mMatchup')
+    path_teams <- .coerce_local_path(local = local, path = path_teams, url = url_teams, suffix = 'teams')
+    path_scores <- .coerce_local_path(local = local, path = path_scores, url = url_scores, suffix = 'scores')
+    
     resp_teams <-
-      glue::glue('{base_url}/{league_id}?view=mtm') %>% 
+      path_teams %>% 
+      jsonlite::fromJSON()
+    
+    resp_scores_init <- 
+      path_scores %>% 
       jsonlite::fromJSON()
     
     teams <-
@@ -54,10 +86,7 @@ scrape_espn_ff_scores <-
         team = sprintf('%s %s', .data$location, .data$nickname)
       ) %>% 
       dplyr::relocate(.data$team_id, .data$team)
-    
-    resp_scores_init <- 
-      glue::glue('{base_url}/{league_id}?view=mMatchup') %>% 
-      jsonlite::fromJSON()
+
     scores_init <-
       tibble::tibble(
         week = resp_scores_init$schedule$matchupPeriodId,

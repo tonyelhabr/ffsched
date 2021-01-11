@@ -9,6 +9,9 @@ scrape_espn_ff_scores(
   league_size = .get_league_size(),
   season = .get_season(),
   weeks = .get_weeks_cutoff(),
+  local = FALSE,
+  path_teams = NULL,
+  path_scores = NULL,
   ...,
   overwrite = FALSE,
   export = TRUE,
@@ -32,6 +35,14 @@ See \code{ffsched.season}.}
 
 \item{weeks}{How many weeks are in schedule. Presently, this function requires
 that \verb{league_size <= league_size < (2 * (league_size - 1))}.}
+
+\item{local, path_teams, path_scores}{If your league is not public, you will have
+to download the appropriate JSON files, set \code{local = TRUE},
+and point \code{path_teams} and \code{path_scores} to these JSON files.
+The JSON for \code{path_teams} should downloaded from
+\url{http://fantasy.espn.com/apis/v3/games/ffl/seasons/{season}/segments/0/leagues/{league_id}?view=mtm}
+and the JSON for \code{path_scores} should be downloaded from
+\url{http://fantasy.espn.com/apis/v3/games/ffl/seasons/{season}/segments/0/leagues/{league_id}?view=mMatchup}.}
 
 \item{...}{Additional parameters passed to \code{generate_schedule()}}
 
