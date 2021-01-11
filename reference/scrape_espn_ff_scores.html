@@ -137,6 +137,9 @@
   league_size <span class='op'>=</span> <span class='fu'>.get_league_size</span><span class='op'>(</span><span class='op'>)</span>,
   season <span class='op'>=</span> <span class='fu'>.get_season</span><span class='op'>(</span><span class='op'>)</span>,
   weeks <span class='op'>=</span> <span class='fu'>.get_weeks_cutoff</span><span class='op'>(</span><span class='op'>)</span>,
+  local <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  path_teams <span class='op'>=</span> <span class='cn'>NULL</span>,
+  path_scores <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>,
   overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
   export <span class='op'>=</span> <span class='cn'>TRUE</span>,
@@ -170,6 +173,16 @@ See <code>ffsched.season</code>.</p></td>
       <th>weeks</th>
       <td><p>How many weeks are in schedule. Presently, this function requires
 that <code>league_size &lt;= league_size &lt; (2 * (league_size - 1))</code>.</p></td>
+    </tr>
+    <tr>
+      <th>local, path_teams, path_scores</th>
+      <td><p>If your league is not public, you will have
+to download the appropriate JSON files, set <code>local = TRUE</code>,
+and point <code>path_teams</code> and <code>path_scores</code> to these JSON files.
+The JSON for <code>path_teams</code> should downloaded from
+<a href='http://fantasy.espn.com/apis/v3/games/ffl/seasons/{season}/segments/0/leagues/{league_id}?view=mtm'>http://fantasy.espn.com/apis/v3/games/ffl/seasons/{season}/segments/0/leagues/{league_id}?view=mtm</a>
+and the JSON for <code>path_scores</code> should be downloaded from
+<a href='http://fantasy.espn.com/apis/v3/games/ffl/seasons/{season}/segments/0/leagues/{league_id}?view=mMatchup'>http://fantasy.espn.com/apis/v3/games/ffl/seasons/{season}/segments/0/leagues/{league_id}?view=mMatchup</a>.</p></td>
     </tr>
     <tr>
       <th>...</th>
