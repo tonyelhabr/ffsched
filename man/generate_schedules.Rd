@@ -42,8 +42,11 @@ desire.}
 
 \item{export}{Whether to export.}
 
-\item{dir, file, ext}{Directory, filename (without extension), and file extension
-to use to generate \code{path} if \code{path} is not explicitly provided.}
+\item{dir}{Directory to use to generate \code{path} if \code{path} is not explicitly provided.}
+
+\item{file}{Filename (without extension) to generate \code{path} if \code{path} is not explicitly provided.}
+
+\item{ext}{File extension to use to generate \code{path} if \code{path} is not explicitly provided.}
 
 \item{path}{Path to export to.}
 

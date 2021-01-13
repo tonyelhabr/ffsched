@@ -183,8 +183,9 @@ generate_schedule <-
 #' @param ... Additional parameters passed to `generate_schedule()`
 #' @param overwrite Whether to overwrite existing file at `path`, if it exists.
 #' @param export Whether to export.
-#' @param dir,file,ext Directory, filename (without extension), and file extension
-#' to use to generate `path` if `path` is not explicitly provided.
+#' @param dir Directory to use to generate `path` if `path` is not explicitly provided.
+#' @param file Filename (without extension) to generate `path` if `path` is not explicitly provided.
+#' @param ext File extension to use to generate `path` if `path` is not explicitly provided.
 #' @param path Path to export to.
 #' @param f_import Function to import with if file exists and `overwrite = TRUE`.
 #' @param f_export Function to export with if `export = TRUE` .

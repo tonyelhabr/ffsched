@@ -50,14 +50,11 @@ and the JSON for \code{path_scores} should be downloaded from
 
 \item{export}{Whether to export.}
 
-\item{dir}{Directory, filename (without extension), and file extension
-to use to generate \code{path} if \code{path} is not explicitly provided.}
+\item{dir}{Directory to use to generate \code{path} if \code{path} is not explicitly provided.}
 
-\item{file}{Directory, filename (without extension), and file extension
-to use to generate \code{path} if \code{path} is not explicitly provided.}
+\item{file}{Filename (without extension) to generate \code{path} if \code{path} is not explicitly provided.}
 
-\item{ext}{Directory, filename (without extension), and file extension
-to use to generate \code{path} if \code{path} is not explicitly provided.}
+\item{ext}{File extension to use to generate \code{path} if \code{path} is not explicitly provided.}
 
 \item{path}{Path to export to.}
 

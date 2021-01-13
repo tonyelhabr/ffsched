@@ -44,14 +44,11 @@ that \verb{league_size <= league_size < (2 * (league_size - 1))}.}
 
 \item{export}{Whether to export.}
 
-\item{dir}{Directory, filename (without extension), and file extension
-to use to generate \code{path} if \code{path} is not explicitly provided.}
+\item{dir}{Directory to use to generate \code{path} if \code{path} is not explicitly provided.}
 
-\item{file}{Directory, filename (without extension), and file extension
-to use to generate \code{path} if \code{path} is not explicitly provided.}
+\item{file}{Filename (without extension) to generate \code{path} if \code{path} is not explicitly provided.}
 
-\item{ext}{Directory, filename (without extension), and file extension
-to use to generate \code{path} if \code{path} is not explicitly provided.}
+\item{ext}{File extension to use to generate \code{path} if \code{path} is not explicitly provided.}
 
 \item{path}{Path to export to.}
 
