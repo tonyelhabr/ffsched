@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://tonyelhabr.github.io/ffsched//index.html</loc>
+  </url>
+  <url>
+    <loc>https://tonyelhabr.github.io/ffsched//reference/do_simulate_standings.html</loc>
+  </url>
+  <url>
+    <loc>https://tonyelhabr.github.io/ffsched//reference/generate_schedule.html</loc>
+  </url>
+  <url>
+    <loc>https://tonyelhabr.github.io/ffsched//reference/generate_schedules.html</loc>
+  </url>
+  <url>
+    <loc>https://tonyelhabr.github.io/ffsched//reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>https://tonyelhabr.github.io/ffsched//reference/scrape_espn_ff_scores.html</loc>
+  </url>
+  <url>
+    <loc>https://tonyelhabr.github.io/ffsched//reference/theme_set_update_ffsched.html</loc>
+  </url>
+  <url>
+    <loc>https://tonyelhabr.github.io/ffsched//reference/tidyeval.html</loc>
+  </url>
+  <url>
+    <loc>https://tonyelhabr.github.io/ffsched//articles/basic-usage.html</loc>
+  </url>
+</urlset>

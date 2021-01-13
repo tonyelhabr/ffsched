@@ -3,5 +3,8 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   basic-usage: basic-usage.html
-last_built: 2021-01-13T14:56Z
+last_built: 2021-01-13T21:13Z
+urls:
+  reference: https://tonyelhabr.github.io/ffsched//reference
+  article: https://tonyelhabr.github.io/ffsched//articles
 
