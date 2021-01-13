@@ -1,0 +1,18 @@
+destination: docs
+url: https://tonyelhabr.github.io/ffsched/
+
+authors:
+  Tan Ho:
+    href: https://twitter.com/TonyElHabr
+
+template:
+  params:
+    bootswatch: paper
+  opengraph:
+    twitter:
+      creator: '@TonyElHabr'
+      site: 'tonyelhabr@rbind.io'
+      card: summary
+
+development:
+  mode: auto
