@@ -100,7 +100,7 @@
 
 <span class="co"># Just for plotting</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://forcats.tidyverse.org">forcats</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org">forcats</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org">scales</a></span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">league_id</span> <span class="op">&lt;-</span> <span class="fl">899513</span>
@@ -120,20 +120,20 @@
   <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sched_sims</span>
-<span class="co">#&gt; [90m# A tibble: 120,000 x 4[39m</span>
+<span class="co">#&gt; # A tibble: 120,000 x 4</span>
 <span class="co">#&gt;    idx_sim  week team_id opponent_id</span>
-<span class="co">#&gt;      [3m[90m&lt;int&gt;[39m[23m [3m[90m&lt;dbl&gt;[39m[23m   [3m[90m&lt;int&gt;[39m[23m       [3m[90m&lt;int&gt;[39m[23m</span>
-<span class="co">#&gt; [90m 1[39m       1     1       1           2</span>
-<span class="co">#&gt; [90m 2[39m       1     1       2           1</span>
-<span class="co">#&gt; [90m 3[39m       1     1       3           8</span>
-<span class="co">#&gt; [90m 4[39m       1     1       4           5</span>
-<span class="co">#&gt; [90m 5[39m       1     1       5           4</span>
-<span class="co">#&gt; [90m 6[39m       1     1       6           7</span>
-<span class="co">#&gt; [90m 7[39m       1     1       7           6</span>
-<span class="co">#&gt; [90m 8[39m       1     1       8           3</span>
-<span class="co">#&gt; [90m 9[39m       1     1       9          10</span>
-<span class="co">#&gt; [90m10[39m       1     1      10           9</span>
-<span class="co">#&gt; [90m# … with 119,990 more rows[39m</span></code></pre></div>
+<span class="co">#&gt;      &lt;int&gt; &lt;dbl&gt;   &lt;int&gt;       &lt;int&gt;</span>
+<span class="co">#&gt;  1       1     1       1           2</span>
+<span class="co">#&gt;  2       1     1       2           1</span>
+<span class="co">#&gt;  3       1     1       3           8</span>
+<span class="co">#&gt;  4       1     1       4           5</span>
+<span class="co">#&gt;  5       1     1       5           4</span>
+<span class="co">#&gt;  6       1     1       6           7</span>
+<span class="co">#&gt;  7       1     1       7           6</span>
+<span class="co">#&gt;  8       1     1       8           3</span>
+<span class="co">#&gt;  9       1     1       9          10</span>
+<span class="co">#&gt; 10       1     1      10           9</span>
+<span class="co">#&gt; # … with 119,990 more rows</span></code></pre></div>
 <p>Get fantasy football scores from ESPN.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">scores</span> <span class="op">&lt;-</span>
@@ -145,22 +145,22 @@
   <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">scores</span>
-<span class="co">#&gt; [90m# A tibble: 120 x 14[39m</span>
-<span class="co">#&gt;    team_id opponent_id team   week team_home_id team_away_id points_home</span>
-<span class="co">#&gt;      [3m[90m&lt;dbl&gt;[39m[23m       [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;chr&gt;[39m[23m [3m[90m&lt;dbl&gt;[39m[23m        [3m[90m&lt;dbl&gt;[39m[23m        [3m[90m&lt;dbl&gt;[39m[23m       [3m[90m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [90m 1[39m       1           4 The …     1            4            1       130. </span>
-<span class="co">#&gt; [90m 2[39m       1           5 The …     2            5            1       163. </span>
-<span class="co">#&gt; [90m 3[39m       1           3 The …     3            3            1       119. </span>
-<span class="co">#&gt; [90m 4[39m       1           8 The …     4            8            1        95.2</span>
-<span class="co">#&gt; [90m 5[39m       1           7 The …     5            7            1       127. </span>
-<span class="co">#&gt; [90m 6[39m       1           2 The …     6            2            1       146. </span>
-<span class="co">#&gt; [90m 7[39m       1           6 The …     7            6            1       101. </span>
-<span class="co">#&gt; [90m 8[39m       1          10 The …     8           10            1       152. </span>
-<span class="co">#&gt; [90m 9[39m       1           9 The …     9            9            1       138. </span>
-<span class="co">#&gt; [90m10[39m       1           5 The …    10            5            1       162. </span>
-<span class="co">#&gt; [90m# … with 110 more rows, and 7 more variables: points_away [3m[90m&lt;dbl&gt;[90m[23m,[39m</span>
-<span class="co">#&gt; [90m#   team_home [3m[90m&lt;chr&gt;[90m[23m, team_away [3m[90m&lt;chr&gt;[90m[23m, team_winner_id [3m[90m&lt;dbl&gt;[90m[23m, pf [3m[90m&lt;dbl&gt;[90m[23m, pa [3m[90m&lt;dbl&gt;[90m[23m,[39m</span>
-<span class="co">#&gt; [90m#   is_winner [3m[90m&lt;lgl&gt;[90m[23m[39m</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 120 x 14</span>
+<span class="co">#&gt;    team_id opponent_id team           week team_home_id team_away_id points_home</span>
+<span class="co">#&gt;      &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;</span>
+<span class="co">#&gt;  1       1           4 The Early GG…     1            4            1       130. </span>
+<span class="co">#&gt;  2       1           5 The Early GG…     2            5            1       163. </span>
+<span class="co">#&gt;  3       1           3 The Early GG…     3            3            1       119. </span>
+<span class="co">#&gt;  4       1           8 The Early GG…     4            8            1        95.2</span>
+<span class="co">#&gt;  5       1           7 The Early GG…     5            7            1       127. </span>
+<span class="co">#&gt;  6       1           2 The Early GG…     6            2            1       146. </span>
+<span class="co">#&gt;  7       1           6 The Early GG…     7            6            1       101. </span>
+<span class="co">#&gt;  8       1          10 The Early GG…     8           10            1       152. </span>
+<span class="co">#&gt;  9       1           9 The Early GG…     9            9            1       138. </span>
+<span class="co">#&gt; 10       1           5 The Early GG…    10            5            1       162. </span>
+<span class="co">#&gt; # … with 110 more rows, and 7 more variables: points_away &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   team_home &lt;chr&gt;, team_away &lt;chr&gt;, team_winner_id &lt;dbl&gt;, pf &lt;dbl&gt;, pa &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   is_winner &lt;lgl&gt;</span></code></pre></div>
 <p>Join the simulated schedules and the actual scores together to come up with simulated standings.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">anonymize_teams</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">{</span>
@@ -209,20 +209,20 @@
   <span class="fu">anonymize_teams</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">standings_sims</span>
-<span class="co">#&gt; [90m# A tibble: 10,000 x 6[39m</span>
+<span class="co">#&gt; # A tibble: 10,000 x 6</span>
 <span class="co">#&gt;    idx_sim team    team_id    pf     w  rank</span>
-<span class="co">#&gt;      [3m[90m&lt;int&gt;[39m[23m [3m[90m&lt;chr&gt;[39m[23m     [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;int&gt;[39m[23m [3m[90m&lt;int&gt;[39m[23m</span>
-<span class="co">#&gt; [90m 1[39m       1 Team 10      10 [4m1[24m336.     5     8</span>
-<span class="co">#&gt; [90m 2[39m       1 Team 08       8 [4m1[24m480.     6     6</span>
-<span class="co">#&gt; [90m 3[39m       1 Team 02       2 [4m1[24m561.     7     4</span>
-<span class="co">#&gt; [90m 4[39m       1 Team 04       4 [4m1[24m448.     3     9</span>
-<span class="co">#&gt; [90m 5[39m       1 Team 06       6 [4m1[24m609.    10     1</span>
-<span class="co">#&gt; [90m 6[39m       1 Team 03       3 [4m1[24m484.     6     5</span>
-<span class="co">#&gt; [90m 7[39m       1 Team 09       9 [4m1[24m562.     5     7</span>
-<span class="co">#&gt; [90m 8[39m       1 Team 01       1 [4m1[24m313.     2    10</span>
-<span class="co">#&gt; [90m 9[39m       1 Team 05       5 [4m1[24m620.     7     3</span>
-<span class="co">#&gt; [90m10[39m       1 Team 07       7 [4m1[24m677.     9     2</span>
-<span class="co">#&gt; [90m# … with 9,990 more rows[39m</span></code></pre></div>
+<span class="co">#&gt;      &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1       1 Team 10      10 1336.     5     8</span>
+<span class="co">#&gt;  2       1 Team 08       8 1480.     6     6</span>
+<span class="co">#&gt;  3       1 Team 02       2 1561.     7     4</span>
+<span class="co">#&gt;  4       1 Team 04       4 1448.     3     9</span>
+<span class="co">#&gt;  5       1 Team 06       6 1609.    10     1</span>
+<span class="co">#&gt;  6       1 Team 03       3 1484.     6     5</span>
+<span class="co">#&gt;  7       1 Team 09       9 1562.     5     7</span>
+<span class="co">#&gt;  8       1 Team 01       1 1313.     2    10</span>
+<span class="co">#&gt;  9       1 Team 05       5 1620.     7     3</span>
+<span class="co">#&gt; 10       1 Team 07       7 1677.     9     2</span>
+<span class="co">#&gt; # … with 9,990 more rows</span></code></pre></div>
 <p><code>standings_sims</code> can be achieved by using the <code>do_simulate_standings</code> function, which wraps the functionality demonstrated above.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">standings_sims</span> <span class="op">&lt;-</span>
@@ -237,20 +237,20 @@
   <span class="fu">anonymize_teams</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">standings_sims</span>
-<span class="co">#&gt; [90m# A tibble: 10,000 x 6[39m</span>
+<span class="co">#&gt; # A tibble: 10,000 x 6</span>
 <span class="co">#&gt;    idx_sim team    team_id    pf     w  rank</span>
-<span class="co">#&gt;      [3m[90m&lt;int&gt;[39m[23m [3m[90m&lt;chr&gt;[39m[23m     [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;int&gt;[39m[23m [3m[90m&lt;int&gt;[39m[23m</span>
-<span class="co">#&gt; [90m 1[39m       1 Team 10      10 [4m1[24m336.     5     8</span>
-<span class="co">#&gt; [90m 2[39m       1 Team 08       8 [4m1[24m480.     6     6</span>
-<span class="co">#&gt; [90m 3[39m       1 Team 02       2 [4m1[24m561.     7     4</span>
-<span class="co">#&gt; [90m 4[39m       1 Team 04       4 [4m1[24m448.     3     9</span>
-<span class="co">#&gt; [90m 5[39m       1 Team 06       6 [4m1[24m609.    10     1</span>
-<span class="co">#&gt; [90m 6[39m       1 Team 03       3 [4m1[24m484.     6     5</span>
-<span class="co">#&gt; [90m 7[39m       1 Team 09       9 [4m1[24m562.     5     7</span>
-<span class="co">#&gt; [90m 8[39m       1 Team 01       1 [4m1[24m313.     2    10</span>
-<span class="co">#&gt; [90m 9[39m       1 Team 05       5 [4m1[24m620.     7     3</span>
-<span class="co">#&gt; [90m10[39m       1 Team 07       7 [4m1[24m677.     9     2</span>
-<span class="co">#&gt; [90m# … with 9,990 more rows[39m</span></code></pre></div>
+<span class="co">#&gt;      &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1       1 Team 10      10 1336.     5     8</span>
+<span class="co">#&gt;  2       1 Team 08       8 1480.     6     6</span>
+<span class="co">#&gt;  3       1 Team 02       2 1561.     7     4</span>
+<span class="co">#&gt;  4       1 Team 04       4 1448.     3     9</span>
+<span class="co">#&gt;  5       1 Team 06       6 1609.    10     1</span>
+<span class="co">#&gt;  6       1 Team 03       3 1484.     6     5</span>
+<span class="co">#&gt;  7       1 Team 09       9 1562.     5     7</span>
+<span class="co">#&gt;  8       1 Team 01       1 1313.     2    10</span>
+<span class="co">#&gt;  9       1 Team 05       5 1620.     7     3</span>
+<span class="co">#&gt; 10       1 Team 07       7 1677.     9     2</span>
+<span class="co">#&gt; # … with 9,990 more rows</span></code></pre></div>
 <p>Make an interesting plot.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">standings_sims_n</span> <span class="op">&lt;-</span>
@@ -328,7 +328,7 @@
     size <span class="op">=</span> <span class="fl">3</span>
   <span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org//reference/label_percent.html">percent</a></span><span class="op">(</span><span class="va">frac</span>, accuracy <span class="op">=</span> <span class="fl">1.1</span><span class="op">)</span><span class="op">)</span>, 
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html">percent</a></span><span class="op">(</span><span class="va">frac</span>, accuracy <span class="op">=</span> <span class="fl">1.1</span><span class="op">)</span><span class="op">)</span>, 
     color <span class="op">=</span> <span class="st">'black'</span>, 
     size <span class="op">=</span> <span class="fu">pts</span><span class="op">(</span><span class="fl">14</span><span class="op">)</span>,
     fontface <span class="op">=</span> <span class="st">'bold'</span>
@@ -341,7 +341,7 @@
   <span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>
     title <span class="op">=</span> <span class="st">'Simulated standings positions'</span>,
-    subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">'Based on %s unique schedules'</span>, <span class="fu"><a href="https://scales.r-lib.org//reference/label_number.html">comma</a></span><span class="op">(</span><span class="va">sims</span><span class="op">)</span><span class="op">)</span>,
+    subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">'Based on %s unique schedules'</span>, <span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html">comma</a></span><span class="op">(</span><span class="va">sims</span><span class="op">)</span><span class="op">)</span>,
     x <span class="op">=</span> <span class="cn">NULL</span>,
     y <span class="op">=</span> <span class="cn">NULL</span>
   <span class="op">)</span>

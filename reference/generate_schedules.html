@@ -145,8 +145,8 @@ schedules</p>
   league_size <span class='op'>=</span> <span class='fu'>.get_league_size</span><span class='op'>(</span><span class='op'>)</span>,
   weeks <span class='op'>=</span> <span class='fu'>.get_weeks_cutoff</span><span class='op'>(</span><span class='op'>)</span>,
   sims <span class='op'>=</span> <span class='fl'>10</span>,
-  tries <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>ceiling</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>sims</span><span class='op'>)</span><span class='op'>)</span>,
   check_dups <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  tries <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>check_dups</span>, <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>ceiling</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>sims</span><span class='op'>)</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span>,
   <span class='va'>...</span>,
   overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
   export <span class='op'>=</span> <span class='cn'>TRUE</span>,
@@ -169,21 +169,21 @@ in the options. See <code>ffsched.league_size</code>.</p></td>
     <tr>
       <th>weeks</th>
       <td><p>How many weeks are in schedule. Presently, this function requires
-that <code>league_size &lt;= league_size &lt; (2 * (league_size - 1))</code>.</p></td>
+that <code>(league_size - 1) &lt;= weeks &lt; (2 * (league_size - 2))</code>.</p></td>
     </tr>
     <tr>
       <th>sims</th>
       <td><p>How many unique simulations to generate.</p></td>
     </tr>
     <tr>
-      <th>tries</th>
-      <td><p>How many times to re-try.</p></td>
-    </tr>
-    <tr>
       <th>check_dups</th>
       <td><p>Whether to check for duplicates. It's recommended to leave this
 as <code>TRUE</code> to ensure that you get unique results, but that may not be what you
 desire.</p></td>
+    </tr>
+    <tr>
+      <th>tries</th>
+      <td><p>How many times to re-try.</p></td>
     </tr>
     <tr>
       <th>...</th>
