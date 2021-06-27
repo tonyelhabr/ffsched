@@ -34,7 +34,7 @@ in the options. See \code{ffsched.league_size}.}
 See \code{ffsched.season}.}
 
 \item{weeks}{How many weeks are in schedule. Presently, this function requires
-that \verb{league_size <= league_size < (2 * (league_size - 1))}.}
+that \verb{(league_size - 1) <= weeks < (2 * (league_size - 2))}.}
 
 \item{sims}{How many unique simulations to generate.}
 

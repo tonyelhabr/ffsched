@@ -8,7 +8,7 @@ generate_schedule(
   league_size = .get_league_size(),
   seed = NULL,
   seed_init = NULL,
-  retries = league_size^2,
+  retries = league_size^3,
   retries_init = retries
 )
 }

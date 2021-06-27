@@ -8,8 +8,8 @@ generate_schedules(
   league_size = .get_league_size(),
   weeks = .get_weeks_cutoff(),
   sims = 10,
-  tries = ceiling(log(sims)),
   check_dups = TRUE,
+  tries = ifelse(check_dups, ceiling(log(sims)), 1),
   ...,
   overwrite = FALSE,
   export = TRUE,
@@ -26,15 +26,15 @@ generate_schedules(
 in the options. See \code{ffsched.league_size}.}
 
 \item{weeks}{How many weeks are in schedule. Presently, this function requires
-that \verb{league_size <= league_size < (2 * (league_size - 1))}.}
+that \verb{(league_size - 1) <= weeks < (2 * (league_size - 2))}.}
 
 \item{sims}{How many unique simulations to generate.}
-
-\item{tries}{How many times to re-try.}
 
 \item{check_dups}{Whether to check for duplicates. It's recommended to leave this
 as \code{TRUE} to ensure that you get unique results, but that may not be what you
 desire.}
+
+\item{tries}{How many times to re-try.}
 
 \item{...}{Additional parameters passed to \code{generate_schedule()}}
 

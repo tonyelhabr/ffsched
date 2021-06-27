@@ -46,7 +46,6 @@
   
   if(retry_i == retries) {
     # .display_warning('Reached max number of retries for matrix initialization ({retries})!')
-    browser()
     return(NULL)
   }
   teams_possible <- setdiff(idx_team, c(1, team1_week1))
@@ -72,7 +71,7 @@ generate_schedule <-
            # weeks = league_size,
            seed = NULL,
            seed_init = NULL,
-           retries = league_size^2,
+           retries = league_size^3,
            retries_init = retries) {
     
     mat <-
@@ -126,7 +125,7 @@ generate_schedule <-
           mat[2:league_size, week_i] <- NA
           team_i <- 2
           retry_i <- retry_i + 1
-          # .display_info('Re-trying `week_i = {week_i}`{paste0(rep("-", 62), collapse = "")}', .verbose = .verbose)
+          # .display_info('Re-trying `week_i = {week_i}`{paste0(rep("-", 62), collapse = "")}')
         } else {
           mat[team_i, week_i] <- teami_weeki
           team_i <- team_i + 1
@@ -136,7 +135,6 @@ generate_schedule <-
     }
     
     if(retry_i > retries) {
-      # browser()
       # .display_warning('Reached max number of retries for `generate_schedule()` ({retries})!')
       return(NULL)
     }
@@ -174,12 +172,12 @@ generate_schedule <-
 #' @param league_size Number of teams in the league. Can be set globally
 #' in the options. See `ffsched.league_size`.
 #' @param weeks How many weeks are in schedule. Presently, this function requires
-#' that `league_size <= league_size < (2 * (league_size - 1))`.
+#' that `(league_size - 1) <= weeks < (2 * (league_size - 2))`.
 #' @param sims How many unique simulations to generate.
-#' @param tries How many times to re-try.
 #' @param check_dups Whether to check for duplicates. It's recommended to leave this
 #' as `TRUE` to ensure that you get unique results, but that may not be what you
 #' desire.
+#' @param tries How many times to re-try.
 #' @param ... Additional parameters passed to `generate_schedule()`
 #' @param overwrite Whether to overwrite existing file at `path`, if it exists.
 #' @param export Whether to export.
@@ -194,8 +192,8 @@ generate_schedules <-
   function(league_size = .get_league_size(),
            weeks = .get_weeks_cutoff(),
            sims = 10,
-           tries = ceiling(log(sims)),
            check_dups = TRUE,
+           tries = ifelse(check_dups, ceiling(log(sims)), 1),
            ...,
            overwrite = FALSE,
            export = TRUE,
@@ -206,8 +204,8 @@ generate_schedules <-
            f_import = arrow::read_parquet,
            f_export = arrow::write_parquet) {
     
-    stopifnot(weeks >= league_size)
-    stopifnot(weeks <= (2 * (league_size - 1)))
+    stopifnot(weeks >= (league_size - 1))
+    stopifnot(weeks <= (2 * (league_size - 2)))
     
     path_exists <- path %>% file.exists()
     if(path_exists & !overwrite) {
@@ -228,8 +226,9 @@ generate_schedules <-
           1:n_todo, 
           ~generate_schedule(league_size = league_size, ...)
         )
+
       mats <- mats %>% purrr::discard(.mat_is_invalid)
-      
+ 
       n_valid <- mats %>% length()
       i <- 2
       
@@ -275,12 +274,12 @@ generate_schedules <-
         .display_info('`n_todo = {n_todo}` in `loop_i = {loop_i}`.')
         try_i <- try_i + 1
       }
-      }
+    }
     
     if(try_i >= tries) {
       .display_info('Stopped early due to reaching number of tries ({tries})')
     }
-
+    
     .display_info('Converting individual schedulings into one big, tidy data frame. This may take a while!')
     
     res_wide <- 
@@ -288,7 +287,7 @@ generate_schedules <-
       purrr::map(
         ~.x %>% 
           tibble::as_tibble() %>% 
-          purrr::set_names(sprintf('week_%02d', 1:9)) %>% 
+          purrr::set_names(sprintf('week_%02d', 1:(league_size - 1))) %>% 
           dplyr::mutate(team_id = dplyr::row_number())
       ) %>% 
       purrr::map_dfr(dplyr::bind_rows, .id = 'idx_sim') %>% 
